@@ -37,9 +37,15 @@ async function enviarEmail ({ subject, text, toEmail }) {
 }
 
 app.post('/', async (req, res) => {
-  await enviarEmail(req.body);
+  try {
+    const sentInfo = await enviarEmail(req.body);
 
-  res.send('email sent');
+    res.status(200).json(sentInfo);
+  } catch (error) {
+    console.log(error);
+
+    res.send('error');
+  }
 });
 
 app.listen(3000, () => {
